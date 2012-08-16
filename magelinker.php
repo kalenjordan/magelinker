@@ -198,6 +198,9 @@ class MageLinker
         }
 
         $command = $this->_getSymlinkCommand($target, $link, $isDir);
+        if ($this->_debugLevel >= 2) {
+            echo $this->printl("Command: $command");
+        }
 
         $output = '';
         $exitCode = 0;
@@ -207,7 +210,7 @@ class MageLinker
             $output = exec($command, $output, $exitCode);
         }
 
-        if ($this->_debugLevel >= 3) {
+        if ($this->_debugLevel >= 2) {
             echo $this->printl($exitCode . ': ' . $output);
         }
 
@@ -231,7 +234,7 @@ class MageLinker
             $command = "ln -s '$target' '$link'";
         } else {
             $mklink = 'mklink' . ($isDir ? ' /D' : '');
-            $command = "$mklink $link $target";
+            $command = "$mklink \"$link\" \"$target\"";
         }
 
         return $command;
